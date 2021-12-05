@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rel-demo-app-bff-account
+  #For app of apps to work, the metadata 'namespace: openshift-gitops' is required
+  #Source:  https://github.com/argoproj/argo-cd/issues/3181#issuecomment-626901858
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: rel
+    name: {{ .Values.spec.destination.name }}
+  project: rel
+  source:
+    path: ./
+    repoURL: https://github.com/ubisgc/demo-helm-rel-bff-account
+    targetRevision: {{ .Values.spec.source.targetRevision }}
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=false
+      - PruneLast=true

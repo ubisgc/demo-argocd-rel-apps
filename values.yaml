@@ -1,0 +1,6 @@
+spec:
+  destination:
+    server: https://api.crc.testing:6443
+    name: argocdtest
+  source:
+    targetRevision: main
